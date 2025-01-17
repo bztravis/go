@@ -174,6 +174,28 @@ func main() {
 	}
 
 	helloWorld()
+
+	// pointers
+	var sumPtr *int = &sum // pointer to an int, get address
+	fmt.Println(*sumPtr)   // dereference
+
+	// structures
+	type Vertex struct {
+		X int
+		Y int
+	}
+
+	fmt.Println(Vertex{1, 2})
+	vertex := Vertex{0, 0}
+	fmt.Println(vertex.X)
+
+	// refering fields of a struct pointer doesn't require special syntax
+	vp := &vertex
+	fmt.Println(vp.Y)
+
+	fmt.Println(tourGoC())
+
+	fmt.Println(Vertex{X: 1}) // Y:0 is implicit
 }
 
 // looks like constant and function definitions are hoisted
@@ -189,4 +211,9 @@ func needInt(x int) int { return x*10 + 1 }
 func needFloat(x float64) float64 {
 	fmt.Printf("x is of type %T\n", x)
 	return x * 0.1
+}
+
+func tourGoC() (i int) {
+	defer func() { i++ }()
+	return 1
 }
