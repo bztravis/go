@@ -196,6 +196,104 @@ func main() {
 	fmt.Println(tourGoC())
 
 	fmt.Println(Vertex{X: 1}) // Y:0 is implicit
+
+	var msg [2]string
+	msg[0] = "Hello"
+	msg[1] = "World"
+	fmt.Println(msg)
+	fmt.Println(msg[0])
+	// fmt.Println(msg[-1]) // does not work
+
+	primes := [6]int{2, 3, 5, 7, 11, 13}
+	fmt.Println(primes)
+
+	// slices
+	var somePrimes []int = primes[1:3] // inclusive, exclusive
+	fmt.Println(somePrimes)
+
+	// slices are like references to arrays
+	// multiple slices can reference the same elements of the original array
+	var someOtherPrimes []int = primes[1:3] // inclusive, exclusive
+	someOtherPrimes[0] = -3
+
+	fmt.Println(primes, somePrimes, someOtherPrimes)
+
+	// you can delcare a slice literal, which creates an underlying array and returns a slice that references it
+	r := []bool{true, false, true, true, false, true}
+	fmt.Println(r)
+
+	s := []struct {
+		i int
+		b bool
+	}{
+		{2, true},
+		{3, false},
+		{5, true},
+		{7, true},
+		{11, false},
+		{13, true},
+	}
+	fmt.Println(s)
+
+	// same slicing rules and features as in python
+	s = s[1:4]
+	fmt.Println(s)
+	s = s[:2]
+	fmt.Println(s)
+	s = s[1:]
+	fmt.Println(s)
+
+	// slices have a length and a capacity, capacity is the number of elements in the underlying array starting from the first element of the slice
+	var s1 []int // zero value of slice is nil
+	fmt.Println(s1, len(s1), cap(s1))
+
+	// dynamically sized slices: use make
+	b1 := make([]int, 0, 5) // len(b)=0, cap(b)=5
+	fmt.Println(b1)
+
+	// Slices can contain any type, including other slices
+	// Create a tic-tac-toe board.
+	board := [][]string{
+		[]string{"_", "_", "_"},
+		[]string{"_", "_", "_"},
+		[]string{"_", "_", "_"},
+	}
+
+	// The players take turns.
+	board[0][0] = "X"
+	board[2][2] = "O"
+	board[1][2] = "X"
+	board[1][0] = "O"
+
+	fmt.Println(board)
+
+	// Go provides an append function
+	var s2 []int
+	printSlice(s2)
+
+	// append works on nil slices.
+	s2 = append(s2, 0)
+	printSlice(s2)
+
+	// The slice grows as needed.
+	s2 = append(s2, 1)
+	printSlice(s2)
+
+	// We can add more than one element at a time.
+	s2 = append(s2, 2, 3, 4)
+	printSlice(s2)
+
+	// the range for loop iterates over arrays, slices, and maps
+	for i, v := range s2 {
+		fmt.Println(i, v)
+	}
+	for _, v := range s2 {
+		fmt.Println(v)
+	}
+	for i := range s2 {
+		fmt.Println(i)
+	}
+
 }
 
 // looks like constant and function definitions are hoisted
@@ -216,4 +314,8 @@ func needFloat(x float64) float64 {
 func tourGoC() (i int) {
 	defer func() { i++ }()
 	return 1
+}
+
+func printSlice(s []int) {
+	fmt.Printf("len=%d cap=%d %v\n", len(s), cap(s), s)
 }
