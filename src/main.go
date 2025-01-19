@@ -294,6 +294,29 @@ func main() {
 		fmt.Println(i)
 	}
 
+	// maps: default value of nil, has to be made
+	var m map[string]Vertex
+	m = make(map[string]Vertex)
+	m["Bell Labs"] = Vertex{
+		40, -74,
+	}
+	fmt.Println(m["Bell Labs"])
+
+	// map literals
+	m = map[string]Vertex{
+		"Bell Labs": Vertex{
+			40, -74,
+		},
+		"Google": { // Vertex typename in the literal is optional as it can be inferred from the map type
+			37, -122,
+		},
+	}
+
+	// remove key
+	delete(m, "Google")
+
+	elem, ok := m["Google"] // ok is boolean, false if doesn't exist in map
+	fmt.Println(elem, ok)
 }
 
 // looks like constant and function definitions are hoisted
@@ -318,4 +341,23 @@ func tourGoC() (i int) {
 
 func printSlice(s []int) {
 	fmt.Printf("len=%d cap=%d %v\n", len(s), cap(s), s)
+}
+
+// functions are first class objects and can be passed around into other functions and variables
+func compute(fn func(float64, float64) float64) float64 {
+
+	i := 0
+
+	// closure
+	func() {
+		fmt.Println("running")
+	}()
+
+	go func(i int) {
+		fmt.Println("captured value", i)
+	}(i) // best practice to pass in the value to be captured as an argument, since it's not guaranteed to be the same value when the goroutine runs. Since 1.22 for loops have new instsances of variables for every iteration, but this is just to avoid this common mistake within for loops
+
+	i++
+
+	return fn(3, 4)
 }
