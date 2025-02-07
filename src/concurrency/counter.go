@@ -18,7 +18,7 @@ func count(val *int, label string) {
 func main() {
 	val := 0
 	for i := 0; i < 4; i++ {
-		count(&val, "counter"+strconv.Itoa(i))
+		go count(&val, "counter"+strconv.Itoa(i))
 	}
 	fmt.Printf("Done! val is %v\n", val)
 }
