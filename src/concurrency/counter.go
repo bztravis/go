@@ -13,6 +13,8 @@ func count(c chan int, label string) {
 
 	for i := 0; i < 1000000; i++ {
 		val++
+		c <- val
+		val = <-c // before this line is executed is where value may be passed to a different goroutine
 	}
 
 	fmt.Printf("%v final val %v\n", label, val)
