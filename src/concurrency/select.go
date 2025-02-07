@@ -1,3 +1,6 @@
+// Select statements are like switch statements but execute when one of the cases can proceed without being blocked.
+// The interface only states that the cases are chosen randomly, not necessarily in order.
+
 package main
 
 import "fmt"
@@ -8,6 +11,7 @@ func fibonacci(c, quit chan int) {
 		select {
 		case c <- x:
 			x, y = y, x+y
+		// case val, ok := <- quit:
 		case <-quit:
 			fmt.Println("quit")
 			return
@@ -26,7 +30,8 @@ func main() {
 		for i := 0; i < 10; i++ {
 			fmt.Println(<-c)
 		}
-		quit <- 0
+		// quit <- 0
+		close(quit)
 	}()
 	fibonacci(c, quit)
 }
