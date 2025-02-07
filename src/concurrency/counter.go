@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"strconv"
-	"time"
+	"sync"
 )
 
 func count(val *int, label string) {
@@ -17,10 +17,18 @@ func count(val *int, label string) {
 }
 
 func main() {
-	val := 0
-	for i := 0; i < 4; i++ {
-		go count(&val, "counter"+strconv.Itoa(i))
+	val, num := 0, 4
+	var wg sync.WaitGroup
+
+	wg.Add(num)
+	for i := 0; i < num; i++ {
+		go func(i int) { // pass in the value to be captured as an argument, since it's not guaranteed to be the same value when the goroutine runs. This is fixed since Go v.1.22 https://tip.golang.org/doc/go1.22
+			defer wg.Done()
+			count(&val, "counter"+strconv.Itoa(i))
+		}(i)
 	}
-	time.Sleep(1 * time.Second)
+
+	wg.Wait()
+
 	fmt.Printf("Done! val is %v\n", val)
 }
