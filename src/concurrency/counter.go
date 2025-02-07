@@ -23,7 +23,7 @@ func count(c chan int, label string) {
 func main() {
 	val, num := 0, 4
 	var wg sync.WaitGroup
-	c := make(chan int)
+	c := make(chan int, 1)
 
 	wg.Add(num)
 	for i := 0; i < num; i++ {
