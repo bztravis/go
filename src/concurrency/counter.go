@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"time"
 )
 
 func count(val *int, label string) {
@@ -20,5 +21,6 @@ func main() {
 	for i := 0; i < 4; i++ {
 		go count(&val, "counter"+strconv.Itoa(i))
 	}
+	time.Sleep(1 * time.Second)
 	fmt.Printf("Done! val is %v\n", val)
 }
