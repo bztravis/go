@@ -325,6 +325,18 @@ func main() {
 	// Index also works on a slice of strings
 	ss := []string{"foo", "bar", "baz"}
 	fmt.Println(Index(ss, "hello"))
+
+	slice := make([]int, 0)
+	fmt.Println(len(slice), cap(slice))
+	var slice2 []int
+	for i := 0; i < 100; i++ {
+		slice = append(slice, i)
+		slice2 = append(slice, i) // append for slices is amortized O(1), probably same mechanism as in cpp vectors
+		fmt.Printf("%p\n", &slice2)
+	}
+	fmt.Println(len(slice), cap(slice))
+
+	fmt.Println(slice)
 }
 
 // looks like constant and function definitions are hoisted
